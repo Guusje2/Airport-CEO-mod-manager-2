@@ -32,11 +32,13 @@ public class UIController : MonoBehaviour
     public void OnCreateModData()
     {
         controller.InstallMod();
+        NotificationController.SendNotification("Installed the mod succesfully");
     }
 
     public void OnInstallFolder ()
     {
         controller.InstallFolder = FileBrowser.OpenSingleFolder("Select the install folder", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "//Apoapsis Studios//Airport CEO//Mods");
+        NotificationController.SendNotification("Mod folder set to " + controller.InstallFolder);
     }
 
     public void RefreshMods ()
@@ -50,6 +52,7 @@ public class UIController : MonoBehaviour
         controller.modPacks[0].Airlines.Clear();
         controller.modPacks[0].GetAllBusinessData();
         RefreshModUi();
+        NotificationController.SendNotification("Refreshing data complete");
     }
 
     public void RefreshModUi()
