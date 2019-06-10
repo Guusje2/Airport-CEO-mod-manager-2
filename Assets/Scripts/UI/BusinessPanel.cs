@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ACEOMM2;
 using UnityEngine.UI;
+using System.IO;
+using System.Threading.Tasks;
 
 public class BusinessPanel : MonoBehaviour
 {
@@ -39,8 +41,14 @@ public class BusinessPanel : MonoBehaviour
         CountryText.text = B.countryCode;
         TypeText.text = B.businessType.ToString();
         ClassText.text = B.businessClass.ToString();
-        B.DownloadLogo("");
-        LogoImage.sprite = IMG2Sprite.instance.LoadNewSprite("" + B.name + "png");
+        Task<bool> t = B.DownloadLogo(Path.Combine(Application.streamingAssetsPath, B.name + "png"));
+        if (t.Status != TaskStatus.Running || t.Status != TaskStatus.RanToCompletion)
+        {
+            t.RunSynchronously();
+        }
+        
+        Debug.Log((string)Path.Combine(Application.streamingAssetsPath, B.name + "png"));
+        LogoImage.sprite = IMG2Sprite.instance.LoadNewSprite(Path.Combine(Application.streamingAssetsPath, B.name + "png"));
     }
 
     public void OnClose ()
