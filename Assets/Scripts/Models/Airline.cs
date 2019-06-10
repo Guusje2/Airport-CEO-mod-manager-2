@@ -34,7 +34,7 @@ namespace ACEOMM2
 
         public new void WriteToFile (string location)
         {
-            Debug.Log("Installing " + name);
+            //Debug.Log("Installing " + name);
             System.IO.Directory.CreateDirectory(Path.Combine(location, name));
             try
             {
@@ -52,34 +52,34 @@ namespace ACEOMM2
             {
                 file.Write(MakeJSONString());
             }
-            Debug.Log("Liveries count: " + liveries.Count);
+            //Debug.Log("Liveries count: " + liveries.Count);
             foreach (Livery livery in liveries)
             {
            
                 Directory.CreateDirectory(Path.Combine(location, name, livery.Aircraft));
                 DownloadFile(Path.Combine(location, name, livery.Aircraft, "liveryData.json"), livery.JsonLink);
                 DownloadFile(Path.Combine(location, name, livery.Aircraft, livery.Aircraft + "_Mod.png"), livery.ImageLink);
-                Debug.Log("Installing " + livery.Airline + "|" + livery.Aircraft + " to " + Path.Combine(location, name, livery.Aircraft));
+               // Debug.Log("Installing " + livery.Airline + "|" + livery.Aircraft + " to " + Path.Combine(location, name, livery.Aircraft));
             }
 
         }
 
         public string MakeJSONString()
         {
-            Debug.Log("MakeJSONSTRING");
+            //Debug.Log("MakeJSONSTRING");
             foreach (Livery livery in liveries)
             {
                 if(fleet == null)
                 {
                     fleet = new List<string>(); 
                     fleet.Add(livery.Aircraft);
-                    Debug.Log("Added " + livery.Aircraft + " to the fleet of " + name);
+                    //Debug.Log("Added " + livery.Aircraft + " to the fleet of " + name);
                     continue;
                 }
                 if ( !fleet.Contains(livery.Aircraft))
                 {
                     fleet.Add(livery.Aircraft);
-                    Debug.Log("Added " + livery.Aircraft + " to the fleet of " + name);
+                    //Debug.Log("Added " + livery.Aircraft + " to the fleet of " + name);
                 }
             }
             return JsonUtility.ToJson(this);

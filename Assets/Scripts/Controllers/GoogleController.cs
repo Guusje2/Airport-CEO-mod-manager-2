@@ -13,6 +13,8 @@ using System;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
+using Newtonsoft.Json;
+using System.Security.Cryptography.X509Certificates;
 
 [Serializable]
 public class GoogleController : MonoBehaviour {
@@ -89,7 +91,7 @@ public class ModPack
     /// contains the ranges google spreadsheet api uses. key is a lowercase string like basic;banks;avfuel;
     /// </summary>
     public Dictionary<string, string> ranges;
-    private UserCredential credential;
+    private ServiceAccountCredential credential;
     private SheetsService SheetService;
 
 
@@ -100,19 +102,15 @@ public class ModPack
         businesses = new List<Business>();
         Airlines = new Dictionary<string, Airline>();
         name = _name;
-        using (var stream = new FileStream( Path.Combine(Application.streamingAssetsPath, "Credentials.json"), FileMode.Open, FileAccess.Read))
-        {
-            // The file token.json stores the user's access and refresh tokens, and is created
-            // automatically when the authorization flow completes for the first time.
-            string credPath = Path.Combine(Application.persistentDataPath,"token-" + name + ".json");
-            credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleClientSecrets.Load(stream).Secrets,
-                scopes,
-                "user",
-                CancellationToken.None,
-                new FileDataStore(credPath, true)).Result;
-            Debug.Log("Credential file saved to: " + credPath);
-        }
+        string P12Path = Path.Combine(Application.streamingAssetsPath, "key.p12");
+        var certificate = new X509Certificate2(@"key.p12", "notasecret", X509KeyStorageFlags.Exportable);
+        string serviceAccountEmail = "aceomm2@quickstart-1554883937733.iam.gserviceaccount.com";
+        ServiceAccountCredential credential = new ServiceAccountCredential(
+           new ServiceAccountCredential.Initializer(serviceAccountEmail)
+           {
+               Scopes = scopes
+           }.FromCertificate(certificate));
+
         SheetService = new SheetsService(new BaseClientService.Initializer()
         {
             HttpClientInitializer = credential,
