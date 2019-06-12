@@ -21,7 +21,7 @@ public class BusinessPanel : MonoBehaviour
     public Text CountryText;
     public Text TypeText;
     public Text ClassText;
-    public Image LogoImage;
+    public RawImage LogoImage;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,14 +41,15 @@ public class BusinessPanel : MonoBehaviour
         CountryText.text = B.countryCode;
         TypeText.text = B.businessType.ToString();
         ClassText.text = B.businessClass.ToString();
-        Task<bool> t = B.DownloadLogo(Path.Combine(Application.streamingAssetsPath, B.name + "png"));
-        if (t.Status != TaskStatus.Running || t.Status != TaskStatus.RanToCompletion)
-        {
-            t.RunSynchronously();
-        }
+       /* B.DownloadLogo(Path.Combine(Application.temporaryCachePath, B.name + "png"));
+      
         
-        Debug.Log((string)Path.Combine(Application.streamingAssetsPath, B.name + "png"));
-        LogoImage.sprite = IMG2Sprite.instance.LoadNewSprite(Path.Combine(Application.streamingAssetsPath, B.name + "png"));
+        Debug.Log((string)Path.Combine(Application.temporaryCachePath, B.name + "png"));
+        byte[] bytes = File.ReadAllBytes(Path.Combine(Application.temporaryCachePath, B.name + "png"));
+        Texture2D a = new Texture2D(256, 256);
+        a.filterMode = FilterMode.Trilinear;
+        a.LoadImage(bytes);
+        LogoImage.texture = a; */
     }
 
     public void OnClose ()

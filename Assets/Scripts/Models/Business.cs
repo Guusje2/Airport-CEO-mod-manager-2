@@ -163,6 +163,7 @@ namespace ACEOMM2
             Task<bool> t = DownloadFile(Path.Combine(location, name) + Path.DirectorySeparatorChar + name + ".png", imgURL);
             bool completion = await t;
             logoPath = name + ".png";
+            Debug.Log("Downloaded the logo of " + name + " to " + location);
             return completion;
         }
 
