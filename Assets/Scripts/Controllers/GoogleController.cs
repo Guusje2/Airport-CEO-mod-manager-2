@@ -103,7 +103,7 @@ public class ModPack
         Airlines = new Dictionary<string, Airline>();
         name = _name;
         string P12Path = Path.Combine(Application.streamingAssetsPath, "key.p12");
-        var certificate = new X509Certificate2(@"key.p12", "notasecret", X509KeyStorageFlags.Exportable);
+        var certificate = new X509Certificate2(P12Path, "notasecret", X509KeyStorageFlags.Exportable);
         string serviceAccountEmail = "aceomm2@quickstart-1554883937733.iam.gserviceaccount.com";
         ServiceAccountCredential credential = new ServiceAccountCredential(
            new ServiceAccountCredential.Initializer(serviceAccountEmail)
@@ -126,6 +126,7 @@ public class ModPack
         GetCateringData();
         GetContractorsData();
         GetAirlineData();
+        GetLiveriesData();
     }
 
     public void GetMainData()
@@ -305,7 +306,15 @@ public class ModPack
                     {
                         continue;
                     }
-                    Airline a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[10]);
+                    Airline a;
+                    if ((string)row[10] != "----")
+                    {
+                         a= new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[10]);
+                    }
+                    else
+                    {
+                         a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11]);
+                    }
                     businesses.Add(a);
                     Airlines.Add((string)row[1], a);
                 }
