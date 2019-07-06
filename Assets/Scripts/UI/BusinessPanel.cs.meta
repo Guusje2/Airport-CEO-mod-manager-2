@@ -3,7 +3,18 @@ guid: 18124418008f6534ea3256671ac2d0c9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - NameText: {instanceID: 0}
+  - CEOText: {instanceID: 0}
+  - AuthorText: {instanceID: 0}
+  - DescriptionText: {instanceID: 0}
+  - CountryText: {instanceID: 0}
+  - TypeText: {instanceID: 0}
+  - ClassText: {instanceID: 0}
+  - FleetView: {instanceID: 0}
+  - LogoImage: {instanceID: 0}
+  - fleetprefab: {fileID: 3044399425492735228, guid: 2423798213b69e740a75cf4621f20ddd,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

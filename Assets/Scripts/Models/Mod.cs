@@ -44,6 +44,7 @@ namespace ACEOMM2
             System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "AVFuelSuppliers"));
             System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Contractors"));
             System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Catering"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Deicing"));
             BusinessInstallFolder = Path.Combine(Path.Combine(location, name) , "Companies");
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(location, name) + @"\modData.json"))
@@ -88,6 +89,9 @@ namespace ACEOMM2
                         a.WriteToFile(Path.Combine(BusinessInstallFolder, "Airlines"));
                         break;
                     case BusinessType.franchise:
+                        break;
+                    case BusinessType.deicing:
+                        business.WriteToFile(Path.Combine(BusinessInstallFolder, "Deicing"));
                         break;
                     case BusinessType.catering:
                         business.WriteToFile(Path.Combine(BusinessInstallFolder, "Catering"));

@@ -30,6 +30,7 @@ namespace ACEOMM2
         airline,
         franchise,
         catering,
+        deicing
     }
 
     [Serializable]
@@ -45,11 +46,12 @@ namespace ACEOMM2
         public string countryCode;
         public BusinessType businessType;
         public string CEOName;
+        [NonSerialized]
         public string Author;
         [NonSerialized]
         public string imgURL;
 
-        public Business(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string _imgURL)
+        public Business(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string _imgURL, string _author)
         {
             name = _name;
             // id = _id;
@@ -59,6 +61,12 @@ namespace ACEOMM2
             businessClass = BusinessClass(_businessclass);
             businessType = BusinessType(_type);
             imgURL = _imgURL;
+            Author = _author;
+        }
+
+        public Business()
+        {
+
         }
 
         /// <summary>
@@ -115,6 +123,8 @@ namespace ACEOMM2
                 case "Airline":
                     return ACEOMM2.BusinessType.airline;
                     break;
+                case "Deicing":
+                    return ACEOMM2.BusinessType.deicing;
                 default:
                     Debug.LogWarning("Invalid Business Type " + input);
                     return ACEOMM2.BusinessType.catering;
@@ -172,7 +182,7 @@ namespace ACEOMM2
         /// </summary>
         /// <param name="_installLocation">The COMPLETE path to install the image, including .png</param>
         /// <param name="_Url"> source url </param>
-        public async Task<bool> DownloadFile(string _installLocation,string _Url )
+        public static async Task<bool> DownloadFile(string _installLocation,string _Url )
         {
             using (WebClient client = new WebClient())
             {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Notification : MonoBehaviour
 {
-    public Text NoticationText;
+    public TMP_Text NoticationText;
     
     public void OnCloseButton ()
     {

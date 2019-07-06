@@ -54,6 +54,9 @@ public class GoogleController : MonoBehaviour {
         ACEOMM.ranges.Add("catering", "Catering!A2:K500");
         ACEOMM.ranges.Add("airlines", "Airlines!A2:S1500");
         ACEOMM.ranges.Add("liveries", "Liveries!A2:O1000");
+        ACEOMM.ranges.Add("products", "Products!A2:O500");
+        ACEOMM.ranges.Add("deice", "De-Ice!A2:K100");
+
         ACEOMM.GetMainData();
         ACEOMM.GetBankData();
         ACEOMM.GetContractorsData();
@@ -61,6 +64,8 @@ public class GoogleController : MonoBehaviour {
         ACEOMM.GetCateringData();
         ACEOMM.GetAirlineData();
         ACEOMM.GetLiveriesData();
+        ACEOMM.GetProductsData();
+        ACEOMM.GetDeicingData();
         GameObject.FindObjectOfType<UIController>().RefreshModUi();
         
        
@@ -80,6 +85,8 @@ public class ModPack
 {
     public List<Business> businesses;
     public Dictionary<string, Airline> Airlines;
+    [SerializeField]
+    public Dictionary<string, Product> Products;
     public string version;
     public string name;
     public string description;
@@ -101,6 +108,7 @@ public class ModPack
         ranges = new Dictionary<string, string>();
         businesses = new List<Business>();
         Airlines = new Dictionary<string, Airline>();
+        Products = new Dictionary<string, Product>();
         name = _name;
         string P12Path = Path.Combine(Application.streamingAssetsPath, "key.p12");
         var certificate = new X509Certificate2(P12Path, "notasecret", X509KeyStorageFlags.Exportable);
@@ -127,6 +135,7 @@ public class ModPack
         GetContractorsData();
         GetAirlineData();
         GetLiveriesData();
+        GetDeicingData();
     }
 
     public void GetMainData()
@@ -181,7 +190,7 @@ public class ModPack
                     {
                         continue;
                     }
-                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Bank", (string)row[9]));
+                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Bank", (string)row[9], (string)row[6]));
                 }
             }
         }
@@ -210,7 +219,7 @@ public class ModPack
                     {
                         continue;
                     }
-                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Contractor", (string)row[9]));
+                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Contractor", (string)row[9], (string)row[6]));
                 }
             }
         }
@@ -239,7 +248,7 @@ public class ModPack
                     {
                         continue;
                     }
-                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "AVFuelSupplier", (string)row[9]));
+                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "AVFuelSupplier", (string)row[9], (string)row[6]));
                 }
             }
         }
@@ -264,11 +273,11 @@ public class ModPack
                 }
                 else
                 {
-                    if ((string)row[7] != "Complete")
+                    if ((string)row[7] != "Complete" )
                     {
                         continue;
                     }
-                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Catering", (string)row[9]));
+                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Catering", (string)row[9], (string)row[6]));
                 }
             }
         }
@@ -309,11 +318,11 @@ public class ModPack
                     Airline a;
                     if ((string)row[10] != "----")
                     {
-                         a= new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[10]);
+                         a= new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[10], (string)row[6]);
                     }
                     else
                     {
-                         a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11]);
+                         a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11], (string)row[6]);
                     }
                     businesses.Add(a);
                     Airlines.Add((string)row[1], a);
@@ -350,6 +359,58 @@ public class ModPack
                     Livery a = new Livery((string)row[2], (string)row[3], (string)row[0], (string)row[12],(string)row[11]);
                     //Debug.Log(a.Airline);
                     Airlines[(string)row[0]].liveries.Add(a);
+                }
+            }
+        }
+    }
+
+    public void GetProductsData()
+    {
+        string range = ranges["products"];
+        SpreadsheetsResource.ValuesResource.GetRequest request =
+                SheetService.Spreadsheets.Values.Get(spreadsheetId, range);
+
+        //loops through all the data got from the sheet
+        ValueRange response = request.Execute();
+        IList<IList<System.Object>> values = response.Values;
+        if (values != null && values.Count > 01)
+        {
+            foreach (var row in values)
+            {
+                if (row.Count < 10 || (string)row[5] != "Complete")
+                {
+                    continue;
+                }
+                Product a = new Product((string)row[1], (string)row[2], (string)row[7], (string)row[8], (string)row[9], (string)row[10], (string)row[4]);
+                Products.Add((string)row[1], a);
+            }
+        }
+    }
+
+    public void GetDeicingData()
+    {
+        string range = ranges["deice"];
+        SpreadsheetsResource.ValuesResource.GetRequest request =
+                SheetService.Spreadsheets.Values.Get(spreadsheetId, range);
+
+        //loops through all the data got from the sheet
+        ValueRange response = request.Execute();
+        IList<IList<System.Object>> values = response.Values;
+        if (values != null && values.Count > 01)
+        {
+            foreach (var row in values)
+            {
+                if ((string)row[1] == "")
+                {
+                    break;
+                }
+                else
+                {
+                    if ((string)row[7] != "Complete")
+                    {
+                        continue;
+                    }
+                    businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Deicing", (string)row[9], (string)row[6]));
                 }
             }
         }
