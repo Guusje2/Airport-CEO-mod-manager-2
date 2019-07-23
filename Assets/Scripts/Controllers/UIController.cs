@@ -15,6 +15,7 @@ public class UIController : MonoBehaviour
     public GameObject content;
     public BusinessUI Businessprefab;
     public BusinessPanel bp;
+    public ModSettingsPanel MSP;
     
     public Dictionary<GameObject, Business> GameobjectBusinessDatabase;
     // Use this for initialization
@@ -31,6 +32,9 @@ public class UIController : MonoBehaviour
 
     public void OnCreateModData()
     {
+        controller.currentmod.author = MSP.AuthorInput.text;
+        controller.currentmod.description = MSP.DescriptionInput.text;
+        controller.currentmod.name = MSP.NameInput.text;
         controller.InstallMod();
         NotificationController.SendNotification("Installed the mod succesfully");
     }
@@ -41,6 +45,10 @@ public class UIController : MonoBehaviour
         NotificationController.SendNotification("Mod folder set to " + controller.InstallFolder);
     }
 
+    public void OnInstallMod()
+    {
+        MSP.gameObject.SetActive(true);
+    }
     public void RefreshMods ()
     {
         foreach (BusinessUI gm in content.GetComponentsInChildren<BusinessUI>())

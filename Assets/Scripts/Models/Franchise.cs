@@ -11,7 +11,7 @@ namespace ACEOMM2
         string franchiseType;
         public List<string> products;
 
-        public Franchise(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string _imgURL, string _franchiseType, string product1, string product2, string product3)
+        public Franchise(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string _imgURL, string _franchiseType, string[] _products)
         {
             name = _name;
             // id = _id;
@@ -23,7 +23,7 @@ namespace ACEOMM2
             imgURL = _imgURL;
             franchiseType = _franchiseType;
             products = new List<string>();
-            products.AddRange(new string[] { product1, product2, product3 });
+            products.AddRange(_products);
         }
     }
 }

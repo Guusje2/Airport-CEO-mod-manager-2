@@ -56,6 +56,7 @@ public class GoogleController : MonoBehaviour {
         ACEOMM.ranges.Add("liveries", "Liveries!A2:O1000");
         ACEOMM.ranges.Add("products", "Products!A2:O500");
         ACEOMM.ranges.Add("deice", "De-Ice!A2:K100");
+        ACEOMM.ranges.Add("franchises", "Franchises!A2:Q1000");
 
         ACEOMM.GetMainData();
         ACEOMM.GetBankData();
@@ -66,6 +67,7 @@ public class GoogleController : MonoBehaviour {
         ACEOMM.GetLiveriesData();
         ACEOMM.GetProductsData();
         ACEOMM.GetDeicingData();
+        ACEOMM.GetFranchisesData();
         GameObject.FindObjectOfType<UIController>().RefreshModUi();
         
        
@@ -136,6 +138,7 @@ public class ModPack
         GetAirlineData();
         GetLiveriesData();
         GetDeicingData();
+        GetFranchisesData();
     }
 
     public void GetMainData()
@@ -411,6 +414,35 @@ public class ModPack
                         continue;
                     }
                     businesses.Add(new Business((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Deicing", (string)row[9], (string)row[6]));
+                }
+            }
+        }
+    }
+
+    public void GetFranchisesData()
+    {
+        string range = ranges["franchises"];
+        SpreadsheetsResource.ValuesResource.GetRequest request =
+                SheetService.Spreadsheets.Values.Get(spreadsheetId, range);
+
+        //loops through all the data got from the sheet
+        ValueRange response = request.Execute();
+        IList<IList<System.Object>> values = response.Values;
+        if (values != null && values.Count > 01)
+        {
+            foreach (var row in values)
+            {
+                if ((string)row[1] == "")
+                {
+                    break;
+                }
+                else
+                {
+                    if ((string)row[7] != "Complete")
+                    {
+                        continue;
+                    }
+                    businesses.Add(new Franchise((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Franchise", (string)row[8], (string)row[9], new string[] { (string)row[10], (string)row[11], (string)row[12], (string)row[13], (string)row[14]}));
                 }
             }
         }

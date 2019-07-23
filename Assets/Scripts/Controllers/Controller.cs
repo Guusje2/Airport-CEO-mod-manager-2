@@ -1,4 +1,5 @@
 ﻿using ACEOMM2;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace ACEOMM2 {
     public class Controller : MonoBehaviour
     {
         public List<ModPack> modPacks;
-        public string InstallFolder = " C:\\My Documents\\ACEO tests\\";
+        public string InstallFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "//Apoapsis Studios//Airport CEO//Mods";
         /// <summary>
         /// will be removed for a system allowing multiple mods
         /// </summary>
