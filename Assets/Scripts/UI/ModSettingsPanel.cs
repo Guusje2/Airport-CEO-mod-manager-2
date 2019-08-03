@@ -9,5 +9,8 @@ public class ModSettingsPanel : MonoBehaviour
     public TMPro.TMP_InputField DescriptionInput;
     public TMPro.TMP_InputField AuthorInput;
 
- 
+    public void OnCancelButton()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

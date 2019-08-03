@@ -32,4 +32,14 @@ public class MainMenuController : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void OnDiscordButton()
+    {
+        Application.OpenURL("https://discord.gg/NdU5eUA");
+    }
+
+    public void OnMailButton()
+    {
+        Application.OpenURL("https://mailto:aceommteam@gmail.com");
+    }
 }

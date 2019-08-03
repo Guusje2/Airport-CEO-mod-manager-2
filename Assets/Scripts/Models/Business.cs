@@ -125,6 +125,10 @@ namespace ACEOMM2
                     break;
                 case "Deicing":
                     return ACEOMM2.BusinessType.deicing;
+                    break;
+                case "Franchise":
+                    return ACEOMM2.BusinessType.franchise;
+                        break;
                 default:
                     Debug.LogWarning("Invalid Business Type " + input);
                     return ACEOMM2.BusinessType.catering;
@@ -143,7 +147,7 @@ namespace ACEOMM2
         public async void WriteToFile(string location)
         {
             Debug.Log("Installing " + name);
-            System.IO.Directory.CreateDirectory(Path.Combine(location , name ));
+            Directory.CreateDirectory(Path.Combine(location , name ));
             try
             {
                 DownloadLogo(location);
@@ -156,7 +160,7 @@ namespace ACEOMM2
 
 
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(location, name, name + ".json")))
+            using (StreamWriter file = new StreamWriter(Path.Combine(location, name, name + ".json")))
             {
                 file.Write(MakeJSONString());
             }

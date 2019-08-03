@@ -20,7 +20,6 @@ namespace ACEOMM2
         public string modType = "";
         public string[] tags = { "" };
         private List<Business> businesses;
-        
 
         public Mod(string _name, string _description, string _author, string _version)
         {
@@ -45,11 +44,23 @@ namespace ACEOMM2
             System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Contractors"));
             System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Catering"));
             Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Deicing"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "ShopFranchises"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "FoodFranchises"));
+            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Products"));
             BusinessInstallFolder = Path.Combine(Path.Combine(location, name) , "Companies");
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(location, name) + @"\modData.json"))
             {
                 file.Write(JsonUtility.ToJson(this));
+            }
+            foreach (Product product in GameObject.FindObjectOfType<Controller>().modPacks[0].products)
+            {
+                product.InstallProduct(Path.Combine(location, name));
+            }
+            string s  = JsonUtility.ToJson(GameObject.FindObjectOfType<Controller>().modPacks[0].products);
+            using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "Products", "ShopProducts.json")))
+            {
+                file.Write(s);
             }
             InstallBusinessByType();
             return (location + name);
@@ -89,6 +100,15 @@ namespace ACEOMM2
                         a.WriteToFile(Path.Combine(BusinessInstallFolder, "Airlines"));
                         break;
                     case BusinessType.franchise:
+                        Franchise b = (Franchise)business;
+                        if (b.franchiseType == "Shop")
+                        {
+                            b.WriteToFile(Path.Combine(BusinessInstallFolder, "ShopFranchises"));
+                        }
+                        else
+                        {
+                            b.WriteToFile(Path.Combine(BusinessInstallFolder, "FoodFranchises"));
+                        }
                         break;
                     case BusinessType.deicing:
                         business.WriteToFile(Path.Combine(BusinessInstallFolder, "Deicing"));

@@ -54,7 +54,7 @@ public class GoogleController : MonoBehaviour {
         ACEOMM.ranges.Add("catering", "Catering!A2:K500");
         ACEOMM.ranges.Add("airlines", "Airlines!A2:S1500");
         ACEOMM.ranges.Add("liveries", "Liveries!A2:O1000");
-        ACEOMM.ranges.Add("products", "Products!A2:O500");
+        ACEOMM.ranges.Add("products", "Products!A2:H500");
         ACEOMM.ranges.Add("deice", "De-Ice!A2:K100");
         ACEOMM.ranges.Add("franchises", "Franchises!A2:Q1000");
 
@@ -87,8 +87,7 @@ public class ModPack
 {
     public List<Business> businesses;
     public Dictionary<string, Airline> Airlines;
-    [SerializeField]
-    public Dictionary<string, Product> Products;
+    public List<Product> products;
     public string version;
     public string name;
     public string description;
@@ -110,7 +109,7 @@ public class ModPack
         ranges = new Dictionary<string, string>();
         businesses = new List<Business>();
         Airlines = new Dictionary<string, Airline>();
-        Products = new Dictionary<string, Product>();
+        products = new List<Product>();
         name = _name;
         string P12Path = Path.Combine(Application.streamingAssetsPath, "key.p12");
         var certificate = new X509Certificate2(P12Path, "notasecret", X509KeyStorageFlags.Exportable);
@@ -139,6 +138,7 @@ public class ModPack
         GetLiveriesData();
         GetDeicingData();
         GetFranchisesData();
+        GetProductsData();
     }
 
     public void GetMainData()
@@ -367,6 +367,10 @@ public class ModPack
         }
     }
 
+    /**
+     * Gets all products data from the spreadsheet, checks if the products arent from apoaspis or have no image link and creatas Products instances from the data. (those get added to a list in their constructor
+     * 
+     */
     public void GetProductsData()
     {
         string range = ranges["products"];
@@ -380,12 +384,15 @@ public class ModPack
         {
             foreach (var row in values)
             {
-                if (row.Count < 10 || (string)row[5] != "Complete")
+                if (row.Count <= 6)
                 {
                     continue;
                 }
-                Product a = new Product((string)row[1], (string)row[2], (string)row[7], (string)row[8], (string)row[9], (string)row[10], (string)row[4]);
-                Products.Add((string)row[1], a);
+                if ((string)row[5] == "Apoapsis Studios" || (string)row[1] == "" || (string)row[6] == "")   
+                {
+                    continue;
+                }
+                Product a = new Product((string)row[3], (string)row[2], (string)row[6], "white", "white", "white", (string)row[5]);
             }
         }
     }
@@ -421,6 +428,7 @@ public class ModPack
 
     public void GetFranchisesData()
     {
+        Debug.Log("GetFranchisesData");
         string range = ranges["franchises"];
         SpreadsheetsResource.ValuesResource.GetRequest request =
                 SheetService.Spreadsheets.Values.Get(spreadsheetId, range);
@@ -428,22 +436,20 @@ public class ModPack
         //loops through all the data got from the sheet
         ValueRange response = request.Execute();
         IList<IList<System.Object>> values = response.Values;
+        Debug.Log(values.Count);
         if (values != null && values.Count > 01)
         {
             foreach (var row in values)
             {
-                if ((string)row[1] == "")
+                
+                    Debug.Log("InFranchisesCheck");
+                //checking for invalid data
+                if (row.Count < 16 || (string)row[15] == "" || (string)row[14] == "" || (string)row[13] == "" || (string)row[12] == "" || (string)row[11] == "")
                 {
-                    break;
+                    continue;
                 }
-                else
-                {
-                    if ((string)row[7] != "Complete")
-                    {
-                        continue;
-                    }
-                    businesses.Add(new Franchise((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Franchise", (string)row[8], (string)row[9], new string[] { (string)row[10], (string)row[11], (string)row[12], (string)row[13], (string)row[14]}));
-                }
+                businesses.Add(new Franchise((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Franchise", (string)row[9], (string)row[10], new string[] { (string)row[11], (string)row[12], (string)row[13], (string)row[14], (string)row[15]}));
+                
             }
         }
     }
