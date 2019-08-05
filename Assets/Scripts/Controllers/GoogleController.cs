@@ -54,7 +54,7 @@ public class GoogleController : MonoBehaviour {
         ACEOMM.ranges.Add("catering", "Catering!A2:K500");
         ACEOMM.ranges.Add("airlines", "Airlines!A2:S1500");
         ACEOMM.ranges.Add("liveries", "Liveries!A2:O1000");
-        ACEOMM.ranges.Add("products", "Products!A2:H500");
+        ACEOMM.ranges.Add("products", "Products!A2:M500");
         ACEOMM.ranges.Add("deice", "De-Ice!A2:K100");
         ACEOMM.ranges.Add("franchises", "Franchises!A2:Q1000");
 
@@ -388,13 +388,40 @@ public class ModPack
                 {
                     continue;
                 }
+                Product a;
                 if ((string)row[5] == "Apoapsis Studios" || (string)row[1] == "" || (string)row[6] == "")   
                 {
                     continue;
                 }
-                Product a = new Product((string)row[3], (string)row[2], (string)row[6], "white", "white", "white", (string)row[5]);
+                Debug.Log(row.Count);
+                if (row.Count >= 13)
+                {
+                    a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], (string)row[11], (string)row[12], (string)row[5]);
+                    Debug.Log("rowcount 13");
+                } else if (row.Count >= 12)
+                {
+                    a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], (string)row[11], "", (string)row[5]);
+                } else if (row.Count >= 11)
+                {
+                    a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], "", "", (string)row[5]);
+                } else if (row.Count >= 10)
+                {
+                    a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], "", "", "", (string)row[5]);
+                } else if (row.Count >= 9)
+                {
+                    a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], "", "", "", "", (string)row[5]);
+                } else
+                {
+                    a = new Product((string)row[3], (string)row[2], (string)row[6], "", "", "", "", "", (string)row[5]);
+                    Debug.Log("rowcount 8");
+                    a.canHaveAnyColor = true;
+                }
+
+               
+                products.Add(a);
             }
         }
+        Debug.Log(products.Count + " products in list");
     }
 
     public void GetDeicingData()

@@ -55,12 +55,11 @@ namespace ACEOMM2
             }
             foreach (Product product in GameObject.FindObjectOfType<Controller>().modPacks[0].products)
             {
-                product.InstallProduct(Path.Combine(location, name));
+                product.InstallProduct(Path.Combine(location, name, "Products"));
             }
-            string s  = JsonUtility.ToJson(GameObject.FindObjectOfType<Controller>().modPacks[0].products);
             using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "Products", "ShopProducts.json")))
             {
-                file.Write(s);
+                file.Write(Newtonsoft.Json.JsonConvert.SerializeObject(GameObject.FindObjectOfType<Controller>().modPacks[0].products,new Newtonsoft.Json.JsonSerializerSettings { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore}));
             }
             InstallBusinessByType();
             return (location + name);
