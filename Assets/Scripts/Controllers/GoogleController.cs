@@ -87,7 +87,7 @@ public class ModPack
 {
     public List<Business> businesses;
     public Dictionary<string, Airline> Airlines;
-    public List<Product> products;
+    public ProductsContainer products;
     public string version;
     public string name;
     public string description;
@@ -109,7 +109,7 @@ public class ModPack
         ranges = new Dictionary<string, string>();
         businesses = new List<Business>();
         Airlines = new Dictionary<string, Airline>();
-        products = new List<Product>();
+        products = new ProductsContainer();
         name = _name;
         string P12Path = Path.Combine(Application.streamingAssetsPath, "key.p12");
         var certificate = new X509Certificate2(P12Path, "notasecret", X509KeyStorageFlags.Exportable);
@@ -397,7 +397,7 @@ public class ModPack
                 if (row.Count >= 13)
                 {
                     a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], (string)row[11], (string)row[12], (string)row[5]);
-                    Debug.Log("rowcount 13");
+                    //Debug.Log("rowcount 13");
                 } else if (row.Count >= 12)
                 {
                     a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], (string)row[11], "", (string)row[5]);
@@ -413,15 +413,15 @@ public class ModPack
                 } else
                 {
                     a = new Product((string)row[3], (string)row[2], (string)row[6], "", "", "", "", "", (string)row[5]);
-                    Debug.Log("rowcount 8");
+                    //Debug.Log("rowcount 8");
                     a.canHaveAnyColor = true;
                 }
 
                
-                products.Add(a);
+                products.array.Add(a);
             }
         }
-        Debug.Log(products.Count + " products in list");
+        Debug.Log(products.array.Count + " products in list");
     }
 
     public void GetDeicingData()
@@ -469,7 +469,7 @@ public class ModPack
             foreach (var row in values)
             {
                 
-                    Debug.Log("InFranchisesCheck");
+                //Debug.Log("InFranchisesCheck");
                 //checking for invalid data
                 if (row.Count < 16 || (string)row[15] == "" || (string)row[14] == "" || (string)row[13] == "" || (string)row[12] == "" || (string)row[11] == "")
                 {

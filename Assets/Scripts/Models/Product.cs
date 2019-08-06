@@ -8,13 +8,11 @@ using UnityEngine;
 
 namespace ACEOMM2
 {
-    
 
-    
-    public enum ProductType{Shop, Food };
     [Serializable]
     public class Product
     {
+        //product type/name (for example: book)
         public string productType;
         public int pricePerUnit;
         public string imagePath;
@@ -29,8 +27,10 @@ namespace ACEOMM2
             productType = _productType;
             pricePerUnit = int.Parse(_pricePerUnit);
             imagePath = _imagePath;
+            //defaulting the colors to white. If parse fails we will at least have a colour
             availableColors = new ColorRGBA[]{ new ColorRGBA(Color.white), new ColorRGBA(Color.white), new ColorRGBA(Color.white), new ColorRGBA(Color.white), new ColorRGBA(Color.white) };
             
+            //parsing the colors from the input
             ColorUtility.TryParseHtmlString(_color1Id, out Color a);
             availableColors[0] = new ColorRGBA(a);
             //Debug.Log("Color 1 for " + productType + " is: " + a);
@@ -52,7 +52,8 @@ namespace ACEOMM2
 
         }
 
-        public void InstallProduct (string _productsPath)
+        //writes the image file to a path
+        public void installProduct (string _productsPath)
         {
             System.IO.Directory.CreateDirectory(_productsPath);
             Business.DownloadFile(Path.Combine(_productsPath, productType + ".png"), imagePath);
@@ -61,6 +62,9 @@ namespace ACEOMM2
 
     }
 
+    /// <summary>
+    /// class to easily serialize colors in the ACEO format
+    /// </summary>
     public class ColorRGBA
     {
         public double r;
@@ -70,11 +74,38 @@ namespace ACEOMM2
 
         public ColorRGBA(Color color)
         {
-            
-            r = color.r;
-            g = color.g;
-            b = color.b;
-            a = color.a;
+            // times 255 due to aceo using 0-255 and unity using 0-1
+            r = color.r*255;
+            g = color.g*255;
+            b = color.b*255;
+            a = color.a*255;
+        }
+    }
+
+    /// <summary>
+    /// class to hold all of the products and easily serialize them
+    /// </summary>
+    [Serializable]
+    public class ProductsContainer
+    {
+        public List<Product> array;
+
+        public ProductsContainer ()
+        {
+            array = new List<Product>();
+        }
+
+        public void serializeProducts (string installLocation)
+        {
+            Directory.CreateDirectory(Path.Combine(installLocation, "Products"));
+            foreach (Product product in array)
+            {
+                product.installProduct(Path.Combine(installLocation, "Products"));
+            }
+            using (StreamWriter file = new StreamWriter(Path.Combine(installLocation, "Products", "ShopProducts.json")))
+            {
+                file.Write(Newtonsoft.Json.JsonConvert.SerializeObject(array, new Newtonsoft.Json.JsonSerializerSettings { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }));
+            }
         }
     }
 }

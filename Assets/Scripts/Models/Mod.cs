@@ -37,30 +37,24 @@ namespace ACEOMM2
         /// <returns>mod main folder</returns>
         public string CreateModDataJSON(string location)
         {
-            System.IO.Directory.CreateDirectory(Path.Combine(location ,name));
-            System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name) , "Companies"));
-            System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name) , "Companies" , "Banks"));
-            System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "AVFuelSuppliers"));
-            System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Contractors"));
-            System.IO.Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Catering"));
-            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "Deicing"));
-            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "ShopFranchises"));
-            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Companies", "FoodFranchises"));
-            Directory.CreateDirectory(Path.Combine(Path.Combine(location, name), "Products"));
-            BusinessInstallFolder = Path.Combine(Path.Combine(location, name) , "Companies");
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(location, name) + @"\modData.json"))
+            //Create all necessary folders
+            Directory.CreateDirectory(Path.Combine(location ,name));
+            Directory.CreateDirectory(Path.Combine(location, name , "Companies"));
+            Directory.CreateDirectory(Path.Combine(location, name , "Companies" , "Banks"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Companies", "AVFuelSuppliers"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Companies", "Contractors"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Companies", "Catering"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Companies", "Deicing"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Companies", "ShopFranchises"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Companies", "FoodFranchises"));
+            Directory.CreateDirectory(Path.Combine(location, name, "Products"));
+            BusinessInstallFolder = Path.Combine(location, name , "Companies");
+            GameObject.FindObjectOfType<Controller>().modPacks[0].products.serializeProducts(Path.Combine(location, name));
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(location, name, "modData.json")))
             {
                 file.Write(JsonUtility.ToJson(this));
             }
-            foreach (Product product in GameObject.FindObjectOfType<Controller>().modPacks[0].products)
-            {
-                product.InstallProduct(Path.Combine(location, name, "Products"));
-            }
-            using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "Products", "ShopProducts.json")))
-            {
-                file.Write(Newtonsoft.Json.JsonConvert.SerializeObject(GameObject.FindObjectOfType<Controller>().modPacks[0].products,new Newtonsoft.Json.JsonSerializerSettings { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore}));
-            }
+           
             InstallBusinessByType();
             return (location + name);
         }

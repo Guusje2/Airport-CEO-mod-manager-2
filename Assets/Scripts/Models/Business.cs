@@ -192,13 +192,13 @@ namespace ACEOMM2
             {
                 try
                 {
-                    Debug.Log(_Url);
+                    //Debug.Log(_Url);
                     client.DownloadFileAsync(new Uri(_Url), _installLocation);
                     return true;
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("image download from" + _Url + "failed.");
+                    Debug.LogError("image download from" + _Url + "failed.");
                     return false;
                     throw;
                 }

@@ -8,6 +8,7 @@ namespace ACEOMM2
 {
     public class Franchise : Business
     {
+        //either shop or food
         public string franchiseType;
         public List<string> products;
 
