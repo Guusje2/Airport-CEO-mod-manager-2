@@ -125,7 +125,7 @@ public class ModPack
             HttpClientInitializer = credential,
             ApplicationName = "ACEOMM2",
         });
-        GameObject.FindObjectOfType<Controller>().modPacks.Add(this);
+        Controller.instance.modPacks.Add(this);
     }
 
     public void GetAllBusinessData()
@@ -421,7 +421,7 @@ public class ModPack
                 products.array.Add(a);
             }
         }
-        Debug.Log(products.array.Count + " products in list");
+        //Debug.Log(products.array.Count + " products in list");
     }
 
     public void GetDeicingData()

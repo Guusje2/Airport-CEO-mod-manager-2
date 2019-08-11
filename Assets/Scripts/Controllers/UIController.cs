@@ -41,8 +41,8 @@ public class UIController : MonoBehaviour
 
     public void OnInstallFolder ()
     {
-        controller.InstallFolder = FileBrowser.OpenSingleFolder("Select the install folder", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "//Apoapsis Studios//Airport CEO//Mods");
-        NotificationController.SendNotification("Mod folder set to " + controller.InstallFolder);
+        controller.defaultInstallFolder = FileBrowser.OpenSingleFolder("Select the install folder", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "//Apoapsis Studios//Airport CEO//Mods");
+        NotificationController.SendNotification("Mod folder set to " + controller.defaultInstallFolder);
     }
 
     public void OnInstallMod()

@@ -35,7 +35,7 @@ namespace ACEOMM2
         /// </summary>
         /// <param name="location">ends with a slash</param>
         /// <returns>mod main folder</returns>
-        public string CreateModDataJSON(string location)
+        public string installMod(string location)
         {
             //Create all necessary folders
             Directory.CreateDirectory(Path.Combine(location ,name));
@@ -49,13 +49,14 @@ namespace ACEOMM2
             Directory.CreateDirectory(Path.Combine(location, name, "Companies", "FoodFranchises"));
             Directory.CreateDirectory(Path.Combine(location, name, "Products"));
             BusinessInstallFolder = Path.Combine(location, name , "Companies");
-            GameObject.FindObjectOfType<Controller>().modPacks[0].products.serializeProducts(Path.Combine(location, name));
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(location, name, "modData.json")))
+            Controller.instance.modPacks[0].products.serializeProducts(Path.Combine(Controller.instance.productsFolder, name));
+            using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "modData.json")))
             {
                 file.Write(JsonUtility.ToJson(this));
             }
            
             InstallBusinessByType();
+            
             return (location + name);
         }
 

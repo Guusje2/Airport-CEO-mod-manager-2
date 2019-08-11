@@ -104,7 +104,7 @@ namespace ACEOMM2
             }
             using (StreamWriter file = new StreamWriter(Path.Combine(installLocation, "Products", "ShopProducts.json")))
             {
-                file.Write(Newtonsoft.Json.JsonConvert.SerializeObject(array, new Newtonsoft.Json.JsonSerializerSettings { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }));
+                file.Write(Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }));
             }
         }
     }
