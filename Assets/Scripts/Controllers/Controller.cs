@@ -47,7 +47,6 @@ namespace ACEOMM2 {
         public void InstallMod()
         {
             currentmod.installMod(defaultInstallFolder);
-            modPacks[0].GetAllBusinessData();
         }
 
     }

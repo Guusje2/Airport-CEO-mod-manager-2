@@ -40,6 +40,6 @@ public class MainMenuController : MonoBehaviour
 
     public void OnMailButton()
     {
-        Application.OpenURL("mailto:aceommteam@gmail.com");
+        Application.OpenURL("mailto:aceommteam@gmail.com?SUBJECT:=" + Application.version);
     }
 }

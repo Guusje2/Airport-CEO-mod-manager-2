@@ -319,14 +319,7 @@ public class ModPack
                         continue;
                     }
                     Airline a;
-                    if ((string)row[10] != "----")
-                    {
-                         a= new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[10], (string)row[6]);
-                    }
-                    else
-                    {
-                         a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11], (string)row[6]);
-                    }
+                    a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11], (string)row[6], (string)row[12],(string)row[13]);
                     businesses.Add(a);
                     Airlines.Add((string)row[1], a);
                 }

@@ -17,7 +17,9 @@ namespace ACEOMM2
         public string invLogo;
         public List<string> fleet;
         public bool isCustom = true;
-        public Airline(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string imgURL, string _flightPrefix, string _author) : base(_name, _id, _countryCode, _description, _CEO, _businessclass, _type, imgURL, _author)
+        public ColorRGBA backgroundColor;
+        public ColorRGBA textColor;
+        public Airline(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string imgURL, string _flightPrefix, string _author, string _backgroundColor, string _textColor) : base(_name, _id, _countryCode, _description, _CEO, _businessclass, _type, imgURL, _author)
         {
             name = _name;
             // id = _id;
@@ -30,6 +32,11 @@ namespace ACEOMM2
             flightPrefix = _flightPrefix;
             liveries = new List<Livery>();
             Author = _author;
+            Color a;
+            ColorUtility.TryParseHtmlString(_backgroundColor, out a);
+            backgroundColor = new ColorRGBA(a);
+            ColorUtility.TryParseHtmlString(_backgroundColor, out a);
+            backgroundColor = new ColorRGBA(a);
         }
 
         public new void WriteToFile (string location)

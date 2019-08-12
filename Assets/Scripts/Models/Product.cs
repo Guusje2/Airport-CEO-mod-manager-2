@@ -21,12 +21,14 @@ namespace ACEOMM2
         public bool canHaveAnyColor = false;
         [NonSerialized]
         public string author;
+        [NonSerialized]
+        public string imgUrl;
         
-        public Product (string _productType, string _pricePerUnit, string _imagePath, string _color1Id, string _color2Id, string _color3Id, string _color4Id, string _color5Id, string _author)
+        public Product (string _productType, string _pricePerUnit, string _imgUrl, string _color1Id, string _color2Id, string _color3Id, string _color4Id, string _color5Id, string _author)
         {
             productType = _productType;
             pricePerUnit = int.Parse(_pricePerUnit);
-            imagePath = _imagePath;
+            imgUrl = _imgUrl;
             //defaulting the colors to white. If parse fails we will at least have a colour
             availableColors = new ColorRGBA[]{ new ColorRGBA(Color.white), new ColorRGBA(Color.white), new ColorRGBA(Color.white), new ColorRGBA(Color.white), new ColorRGBA(Color.white) };
             
@@ -56,7 +58,7 @@ namespace ACEOMM2
         public void installProduct (string _productsPath)
         {
             System.IO.Directory.CreateDirectory(_productsPath);
-            Business.DownloadFile(Path.Combine(_productsPath, productType + ".png"), imagePath);
+            Business.DownloadFile(Path.Combine(_productsPath, productType + ".png"), imgUrl);
             imagePath = productType + ".png";
         }
 
