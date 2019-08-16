@@ -67,6 +67,7 @@ namespace ACEOMM2
     /// <summary>
     /// class to easily serialize colors in the ACEO format
     /// </summary>
+    [Serializable]
     public class ColorRGBA
     {
         public double r;

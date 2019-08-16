@@ -11,7 +11,7 @@ namespace ACEOMM2
 {
     public class Airline : Business
     {
-        //[NonSerialized]
+        [NonSerialized]
         public List<Livery> liveries;
         public string flightPrefix;
         public string invLogo;
@@ -19,6 +19,7 @@ namespace ACEOMM2
         public bool isCustom = true;
         public ColorRGBA backgroundColor;
         public ColorRGBA textColor;
+
         public Airline(string _name, string _id, string _countryCode, string _description, string _CEO, string _businessclass, string _type, string imgURL, string _flightPrefix, string _author, string _backgroundColor, string _textColor) : base(_name, _id, _countryCode, _description, _CEO, _businessclass, _type, imgURL, _author)
         {
             name = _name;
@@ -35,8 +36,9 @@ namespace ACEOMM2
             Color a;
             ColorUtility.TryParseHtmlString(_backgroundColor, out a);
             backgroundColor = new ColorRGBA(a);
-            ColorUtility.TryParseHtmlString(_backgroundColor, out a);
-            backgroundColor = new ColorRGBA(a);
+            Color b;
+            ColorUtility.TryParseHtmlString(_textColor, out b);
+            textColor = new ColorRGBA(b);
         }
 
         public new void WriteToFile (string location)
@@ -57,7 +59,9 @@ namespace ACEOMM2
 
             using (StreamWriter file = new StreamWriter(Path.Combine(location, name, name + ".json")))
             {
-                file.Write(MakeJSONString());
+                string s = MakeJSONString();
+                Debug.Log(s);
+                file.Write(s);
             }
             //Debug.Log("Liveries count: " + liveries.Count);
             foreach (Livery livery in liveries)

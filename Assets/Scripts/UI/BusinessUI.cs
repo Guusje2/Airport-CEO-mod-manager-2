@@ -19,11 +19,11 @@ public class BusinessUI : MonoBehaviour
     {
         if (controller == null)
         {
-            controller = GameObject.FindObjectOfType<UIController>();
+            controller = FindObjectOfType<UIController>();
         }
         if (!wasLastColored)
         {
-            this.GetComponent<RawImage>().color = new Color(.7f, .7f, .7f,1);
+            GetComponent<RawImage>().color = new Color(.7f, .7f, .7f,1);
             isColored = true;
             wasLastColored = true;
         } else
@@ -36,14 +36,14 @@ public class BusinessUI : MonoBehaviour
     {
         if (b)
         {
-            controller.OnSelectBusiness(this.gameObject);
+            controller.OnSelectBusiness(gameObject);
             Debug.Log("Selected " + name.text);
         }   else
         {
-            controller.OnDeselectBusiness(this.gameObject);
+            controller.OnDeselectBusiness(gameObject);
             if (isColored)
             {
-                this.GetComponent<RawImage>().color = new Color(.7f, .7f, .7f, 1);
+                GetComponent<RawImage>().color = new Color(.7f, .7f, .7f, 1);
             }
         }
     }
@@ -51,6 +51,6 @@ public class BusinessUI : MonoBehaviour
     public void OnMoreInfo()
     {
         controller.bp.gameObject.SetActive((true));
-        controller.bp.Business = controller.GameobjectBusinessDatabase[this.gameObject];
+        controller.bp.Business = controller.GameobjectBusinessDatabase[gameObject];
     }
 }

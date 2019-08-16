@@ -152,7 +152,6 @@ public class ModPack
         IList<IList<System.Object>> values = response.Values;
         if (values != null && values.Count > 01)
         {
-            Debug.Log("Creating ModData.json");
             for (int i = 0; i < 1; i++)
             {
                 var row = values[i];
@@ -302,7 +301,7 @@ public class ModPack
 
         //loops through all the data got from the sheet
         ValueRange response = request.Execute();
-        IList<IList<System.Object>> values = response.Values;
+        IList<IList<System.Object>> values = response.Values;   
         if (values != null && values.Count > 01)
         {
             foreach (var row in values)
@@ -386,7 +385,7 @@ public class ModPack
                 {
                     continue;
                 }
-                Debug.Log(row.Count);
+                //Debug.Log(row.Count);
                 if (row.Count >= 13)
                 {
                     a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], (string)row[11], (string)row[12], (string)row[5]);
@@ -456,7 +455,7 @@ public class ModPack
         //loops through all the data got from the sheet
         ValueRange response = request.Execute();
         IList<IList<System.Object>> values = response.Values;
-        Debug.Log(values.Count);
+        //Debug.Log(values.Count);
         if (values != null && values.Count > 01)
         {
             foreach (var row in values)

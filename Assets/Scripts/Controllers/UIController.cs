@@ -81,7 +81,7 @@ public class UIController : MonoBehaviour
         gm.businessType.text = b.businessType.ToString();
         gm.country.text = b.countryCode;
         GameobjectBusinessDatabase.Add(gm.gameObject, b);
-        return null;
+        return gm.gameObject;
     }
 
     public void OnSelectionValueChanged (bool b)
