@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -61,7 +62,17 @@ namespace ACEOMM2
             }
             //install all businesses
             InstallBusinessByType();
-            
+            //try to reset the selection of businesses; this is very messy and needs refactoring
+            foreach (Business business in businesses)
+            {
+                var keys = from entry in GameObject.FindObjectOfType<UIController>().GameobjectBusinessDatabase
+                           where entry.Value == business
+                           select entry.Key;
+                GameObject gm = keys.First<GameObject>();
+                gm.GetComponent<BusinessUI>().selectedToggle.enabled = false;
+                gm.GetComponent<BusinessUI>().OnToggle(false);
+
+            }
             return (location + name);
         }
 
