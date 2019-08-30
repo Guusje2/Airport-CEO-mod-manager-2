@@ -10,6 +10,8 @@ namespace ACEOMM2 {
     {
         public static Controller instance;
         public List<ModPack> modPacks;
+        public string productsFolder;
+        public bool installProducts;
         /// <summary>
         /// folder in which the businesses will be installed
         /// </summary>
@@ -30,17 +32,22 @@ namespace ACEOMM2 {
             {
                 Destroy(this);
             }
+            if (Application.platform == RuntimePlatform.WindowsPlayer ||Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                productsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steamapps", "common", "Airport CEO", "Airport CEO_Data", "DataFiles", "Products");
+                installProducts = true;
+            } else
+            {
+                productsFolder = "~/Library/Application Support/Steam/steamapps/common/Airport CEO/Airport CEO/Content/DataFiles/Products";
+                installProducts = false;
+            }
             modPacks = new List<ModPack>();
             currentmod = new Mod("ACEOMM", "AceoMM mod test", "Guusje2", "0.0.1");
             Application.targetFrameRate = 60;
         }
-            #if UNITY_STANDALONE_WIN
-        public string productsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),"Steam","steamapps","common","Airport CEO","Airport CEO_Data","DataFiles","Products");
-#endif
 
-#if UNITY_STANDALONE_OSX
-        public string productsFolder = "~/Library/Application Support/Steam/steamapps/common/Airport CEO/Airport CEO/Content/DataFiles/Products";
-#endif  
+        
+
 
 
 

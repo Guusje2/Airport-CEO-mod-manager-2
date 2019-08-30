@@ -386,7 +386,7 @@ public class ModPack
                 {
                     continue;
                 }
-                Debug.Log(row.Count);
+                //Debug.Log(row.Count);
                 if (row.Count >= 13)
                 {
                     a = new Product((string)row[3], (string)row[2], (string)row[6], (string)row[8], (string)row[9], (string)row[10], (string)row[11], (string)row[12], (string)row[5]);
