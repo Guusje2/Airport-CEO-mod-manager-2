@@ -25,7 +25,7 @@ public class MainMenuController : MonoBehaviour
 
     public void OnCreateABusiness()
     {
-        NotificationController.SendNotification("This hasn't been implemented yet"); 
+        NotificationController.SendNotification("This hasn't been implemented yet. coming soon...."); 
     }
 
     public void OnQuit()

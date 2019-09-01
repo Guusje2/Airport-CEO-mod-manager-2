@@ -100,6 +100,7 @@ namespace ACEOMM2
 
         public void serializeProducts (string installLocation)
         {
+            Debug.Log("Installing Products");
             Directory.CreateDirectory(Path.Combine(installLocation, "Products"));
             foreach (Product product in array)
             {

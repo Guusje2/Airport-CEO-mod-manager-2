@@ -16,6 +16,8 @@ using Google.Apis.Services;
 using Newtonsoft.Json;
 using System.Security.Cryptography.X509Certificates;
 
+//this is one complete mess, needs major changes
+
 [Serializable]
 public class GoogleController : MonoBehaviour {
     readonly string[] scopes = { SheetsService.Scope.SpreadsheetsReadonly };

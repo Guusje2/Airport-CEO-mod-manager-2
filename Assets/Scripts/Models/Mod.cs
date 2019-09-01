@@ -50,15 +50,24 @@ namespace ACEOMM2
             Directory.CreateDirectory(Path.Combine(location, name, "Companies", "FoodFranchises"));
             Directory.CreateDirectory(Path.Combine(location, name, "Products"));
             BusinessInstallFolder = Path.Combine(location, name , "Companies");
-            Controller.instance.modPacks[0].products.serializeProducts(Path.Combine(Controller.instance.productsFolder, name));
+            //only installs products when needed
+            if (Controller.instance.installProducts)
+            {
+                Controller.instance.modPacks[0].products.serializeProducts(Path.Combine(Controller.instance.productsFolder, name));
+            }
+            //create the moddata.json file (this class)
             using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "modData.json")))
             {
                 file.Write(JsonUtility.ToJson(this));
             }
-           
+            //install all businesses
             InstallBusinessByType();
             //try to reset the selection of businesses; this is very messy and needs refactoring
-            foreach (Business business in businesses)
+            try
+            {
+
+            
+            /*foreach (Business business in businesses)
             {
                 var keys = from entry in GameObject.FindObjectOfType<UIController>().GameobjectBusinessDatabase
                            where entry.Value == business
@@ -67,6 +76,12 @@ namespace ACEOMM2
                 gm.GetComponent<BusinessUI>().selectedToggle.enabled = false;
                 gm.GetComponent<BusinessUI>().OnToggle(false);
 
+            }*/
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             return (location + name);
         }
