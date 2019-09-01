@@ -63,7 +63,11 @@ namespace ACEOMM2
             //install all businesses
             InstallBusinessByType();
             //try to reset the selection of businesses; this is very messy and needs refactoring
-            foreach (Business business in businesses)
+            try
+            {
+
+            
+            /*foreach (Business business in businesses)
             {
                 var keys = from entry in GameObject.FindObjectOfType<UIController>().GameobjectBusinessDatabase
                            where entry.Value == business
@@ -72,6 +76,12 @@ namespace ACEOMM2
                 gm.GetComponent<BusinessUI>().selectedToggle.enabled = false;
                 gm.GetComponent<BusinessUI>().OnToggle(false);
 
+            }*/
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             return (location + name);
         }
