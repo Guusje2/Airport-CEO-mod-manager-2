@@ -48,7 +48,7 @@ namespace ACEOMM2
             Directory.CreateDirectory(Path.Combine(location, name, "Companies", "Deicing"));
             Directory.CreateDirectory(Path.Combine(location, name, "Companies", "ShopFranchises"));
             Directory.CreateDirectory(Path.Combine(location, name, "Companies", "FoodFranchises"));
-            Directory.CreateDirectory(Path.Combine(location, name, "Products"));
+            //Directory.CreateDirectory(Path.Combine(location, name, "Products"));
             BusinessInstallFolder = Path.Combine(location, name , "Companies");
             //only installs products when needed
             if (Controller.instance.installProducts)
@@ -56,7 +56,7 @@ namespace ACEOMM2
                 Controller.instance.modPacks[0].products.serializeProducts(Path.Combine(Controller.instance.productsFolder, name));
             }
             //create the moddata.json file (this class)
-            using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "modData.json")))
+            using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "ModData.json")))
             {
                 file.Write(JsonUtility.ToJson(this));
             }
