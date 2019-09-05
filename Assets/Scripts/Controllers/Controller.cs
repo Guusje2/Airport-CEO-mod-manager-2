@@ -9,7 +9,7 @@ namespace ACEOMM2 {
     public class Controller : MonoBehaviour
     {
         public static Controller instance;
-        public List<ModPack> modPacks;
+        public List<Database> databases;
         public string productsFolder;
         public bool installProducts;
         /// <summary>
@@ -41,7 +41,7 @@ namespace ACEOMM2 {
                 productsFolder = "~/Library/Application Support/Steam/steamapps/common/Airport CEO/Airport CEO/Content/DataFiles/Products";
                 installProducts = false;
             }
-            modPacks = new List<ModPack>();
+            databases = new List<Database>();
             currentmod = new Mod("ACEOMM", "AceoMM mod test", "Guusje2", "0.0.1");
             Application.targetFrameRate = 60;
         }

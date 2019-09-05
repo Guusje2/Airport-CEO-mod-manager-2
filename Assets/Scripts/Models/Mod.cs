@@ -53,7 +53,7 @@ namespace ACEOMM2
             //only installs products when needed
             if (Controller.instance.installProducts)
             {
-                Controller.instance.modPacks[0].products.serializeProducts(Path.Combine(Controller.instance.productsFolder, name));
+                Controller.instance.databases[0].products.serializeProducts(Path.Combine(Controller.instance.productsFolder, name));
             }
             //create the moddata.json file (this class)
             using (StreamWriter file = new StreamWriter(Path.Combine(location, name, "ModData.json")))

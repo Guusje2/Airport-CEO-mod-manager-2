@@ -56,16 +56,16 @@ public class UIController : MonoBehaviour
             Destroy(gm.gameObject);
         }
         Debug.Log("BusinessProcessing");
-        controller.modPacks[0].businesses.Clear();
-        controller.modPacks[0].Airlines.Clear();
-        controller.modPacks[0].GetAllBusinessData();
+        controller.databases[0].businesses.Clear();
+        controller.databases[0].Airlines.Clear();
+        GameObject.FindObjectOfType<GoogleController>().GetDataGoogle();
         RefreshModUi();
         NotificationController.SendNotification("Refreshing data complete");
     }
 
     public void RefreshModUi()
     {
-        foreach (ModPack mp in controller.modPacks)
+        foreach (Database mp in controller.databases)
         {
             foreach (Business business in mp.businesses)
             {
