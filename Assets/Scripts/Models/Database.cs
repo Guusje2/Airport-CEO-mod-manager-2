@@ -22,14 +22,16 @@ namespace ACEOMM2
             public string author;
         public string businessSheetName;
         public string liveriesSheetName;
+        public string airlinesSheetName;
             
 
-            public Database (string _name, string _version, string _businessSheetName, string _liveriesSheetName)
+            public Database (string _name, string _version, string _businessSheetName, string _liveriesSheetName, string _airlinesSheetName)
             {
                 name = _name;
                 version = _version;
             businessSheetName = _businessSheetName;
             liveriesSheetName = _liveriesSheetName;
+            airlinesSheetName = _airlinesSheetName;
             businesses = new List<Business>();
             Airlines = new Dictionary<string, Airline>();
             products = new ProductsContainer();
@@ -43,12 +45,11 @@ namespace ACEOMM2
             /// <param name="businesses"></param>
             /// <param name="liveries"></param>
             /// <param name="products"></param>
-            public void GetAllBusinessData(IList<IList<object>> businesses, IList<IList<object>> liveries, IList<IList<object>> products)
+            public void GetAllBusinessData(IList<IList<object>> businesses, IList<IList<object>> liveries, IList<IList<object>> products, IList<IList<object>> airlines)
             {
             Debug.Log("GetAllBusinessData for " + name + ": businesses length: " + businesses.Count.ToString() + " liveries length: " + liveries.Count());
             foreach (IList<object> row in businesses)
             {
-                Debug.Log(row[1].ToString());
                 if ((string)row[0] == "")
                 {
                     break;
@@ -76,9 +77,6 @@ namespace ACEOMM2
                     case "Deicing":
                         GetDeicingData(row);
                         break;
-                    case "Airline":
-                        GetAirlineData(row);
-                        break;
                     case "Contractors":
                         GetContractorsData(row);
                         break;
@@ -86,8 +84,10 @@ namespace ACEOMM2
                         break;
                 }
             }
+            GetAirlineData(airlines);
             GetLiveriesData(liveries);
             GetProductsData(products);
+            
             }
 
 
@@ -165,55 +165,61 @@ namespace ACEOMM2
                 }
             }
 
-            public void GetAirlineData(IList<object> row)
+          public void GetAirlineData(IList<IList<object>> values)
             {
+            //Debug.Log("GetAirlineData");
+            foreach (IList<object> row in values)
+            {
+                if (row.Count <= 2 || (string)row[1] == "")
+                {
+                    break;
+                }
+                
+                if (row.Count <= 14 || (string)row[1] == "Name")
+                {
+                    continue;
+                }
+                else
+                {
+                    //Debug.Log((string)row[1] + ":");
+                    if ((string)row[0] == "FALSE")
+                    {
+                        continue;
 
-            if ((string)row[1] == "")
-            {
-                return;
-            }
-            else
-            {
-                //Debug.Log((string)row[1] + ":" + (string)row[17] + "!");
-                if ((string)row[7] != "Complete")
-                {
-                    return;
-                    
-                } //checks if the row length is long enough, and thus if it has colors defined
-                else if (row.Count >= 20){
-                    Airline a;
-                    a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[17], (string)row[6], (string)row[18], (string)row[19]);
-                    businesses.Add(a);
-                    Airlines.Add(a.name, a);
-                } else if (row.Count >= 18)
-                {
-                    Airline a;
-                    a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[17], (string)row[6], "", "");
-                    businesses.Add(a);
-                    Airlines.Add(a.name, a);
+                    } //checks if the row length is long enough, and thus if it has colors defined
+                    else if (row.Count >= 14)
+                    {
+                        Airline a;
+                        a = new Airline((string)row[1], "", (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11], (string)row[6], (string)row[13], (string)row[12]);
+                        businesses.Add(a);
+                        Airlines.Add(a.name, a);
+                    }
+                    else if (row.Count >= 12)
+                    {
+                        Airline a;
+                        a = new Airline((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Airline", (string)row[9], (string)row[11], (string)row[6], "", "");
+                        businesses.Add(a);
+                        Airlines.Add(a.name, a);
+                    }
                 }
             }
-                    
-            }
+          }
 
             public void GetLiveriesData(IList<IList<object>>  values)
             {
                 if (values != null && values.Count > 01)
                 {
                 foreach (var row in values){
-                    if ((string)row[1] == "")
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        if ((string)row[4] != "Complete" || row.Count < 11)
+                    
+                    
+                        if (row.Count < 11 || (string)row[4] != "Complete" )
                         {
                             continue;
                         }
-                        //Debug.Log("Creating the livery by " + (string)row[3] + " for " + (string)row[0]);
+                    
+                    //Debug.Log("Creating the livery by " + (string)row[3] + " for " + (string)row[0]);
 
-                        Livery a = new Livery((string)row[2], (string)row[3], (string)row[0], (string)row[11], (string)row[10]);
+                    Livery a = new Livery((string)row[2], (string)row[3], (string)row[0], (string)row[11], (string)row[10]);
                         //Debug.Log(a.Airline);
                         try
                         {
@@ -224,9 +230,12 @@ namespace ACEOMM2
                             Debug.LogError("Error on GetLiveriesData: " + e + " Livery stats: (Aircraft: " + a.Aircraft + " , Airline: " + a.Airline + " )");
                             throw;
                         }
-                       
+                    if ((string)row[1] == "")
+                    {
+                        break;
                     }
-                    }
+
+                }
                 }
             }   
 
@@ -315,9 +324,19 @@ namespace ACEOMM2
                         {
                 return;
                         }
-                        businesses.Add(new Franchise((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], "Franchise", (string)row[9], (string)row[10], new string[] { (string)row[11], (string)row[12], (string)row[13], (string)row[14], (string)row[15] }));
+                        businesses.Add(new Franchise((string)row[1], (string)row[0], (string)row[2], (string)row[3], (string)row[4], (string)row[5], (string)row[0], (string)row[9], (string)row[10], new string[] { (string)row[11], (string)row[12], (string)row[13], (string)row[14], (string)row[15] }));
 
             }
+
+        public void Clear()
+        {
+            products = null;
+            businesses = null;
+            Airlines = null;
+            products = new ProductsContainer();
+            businesses = new List<Business>();
+            Airlines = new Dictionary<string, Airline>();
+        }
                 
     }
 }

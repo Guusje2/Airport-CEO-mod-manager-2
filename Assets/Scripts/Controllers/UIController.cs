@@ -55,9 +55,12 @@ public class UIController : MonoBehaviour
         {
             Destroy(gm.gameObject);
         }
-        Debug.Log("BusinessProcessing");
-        controller.databases[0].businesses.Clear();
-        controller.databases[0].Airlines.Clear();
+        
+        foreach (Database database in Controller.instance.databases)
+        {
+            Debug.Log("Clearing for " + database.name);
+            database.Clear();
+        }
         GameObject.FindObjectOfType<GoogleController>().GetDataGoogle();
         RefreshModUi();
         NotificationController.SendNotification("Refreshing data complete");

@@ -47,7 +47,7 @@ public class GoogleController : MonoBehaviour {
     public void GetDataGoogle()
     {
         Debug.Log("GetDataGoogle");
-        string range = "Main!A2:D20";
+        string range = "Main!A2:E20";
         SpreadsheetsResource.ValuesResource.GetRequest request =
                 service.Spreadsheets.Values.Get("1eFn71SVZsVvH7qOLv99ZR3Kl4ozn2b6V5s__4JQgZMk", range);
 
@@ -62,14 +62,14 @@ public class GoogleController : MonoBehaviour {
         IList<IList<System.Object>> productValues = response.Values;
         foreach (var row in values)
         {
-            if (row.Count < 4 || (string)row[0] == "")
+            if ((string)row[0] == "")
             {
                 break;
             }
             else
             {
                 Debug.Log(row[0]);
-                Database a = new Database((string)row[0], (string)row[3], (string)row[1], (string)row[2]);
+                Database a = new Database((string)row[0], (string)row[4], (string)row[1], (string)row[2], (string)row[3]);
                 Controller.instance.databases.Add(a);
 
                 //businesses
@@ -87,7 +87,14 @@ public class GoogleController : MonoBehaviour {
                 ValueRange responseLiveries = requestLiveries.Execute();
                 IList<IList<System.Object>> valuesLiveries = responseLiveries.Values;
 
-                a.GetAllBusinessData(valuesBusinesses, valuesLiveries, productValues);
+                SpreadsheetsResource.ValuesResource.GetRequest requestAirlines =
+                service.Spreadsheets.Values.Get("1eFn71SVZsVvH7qOLv99ZR3Kl4ozn2b6V5s__4JQgZMk", a.airlinesSheetName);
+
+                //loops through all the data got from the sheet
+                ValueRange responseAirlines = requestLiveries.Execute();
+                IList<IList<System.Object>> valuesAirlines = responseLiveries.Values;
+
+                a.GetAllBusinessData(valuesBusinesses, valuesLiveries, productValues, valuesAirlines);
             }
         }
         GameObject.FindObjectOfType<UIController>().RefreshModUi();
